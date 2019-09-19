@@ -1,0 +1,213 @@
+<html>
+<style>
+body
+{
+	background-color: grey;
+}
+div
+{
+	width: 192px;
+	border-style: double;
+	border-color: #0000FF;
+}
+img
+{
+	width: 32px;
+}
+</style>
+<center>
+<body>
+	<h1>Discord Panel Generator</h1>
+	<div id="field">
+		<img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><br>
+		<img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><br>
+		<img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><br>
+		<img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><br>
+		<img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><br>
+		<img onclick="drawpanel(this)" src="sl.png"/><img onclick="drawpanel(this)" src="sm.png"/><img onclick="drawpanel(this)" src="sm.png"/><img onclick="drawpanel(this)" src="sm.png"/><img onclick="drawpanel(this)" src="sm.png"/><img onclick="drawpanel(this)" src="sr.png"/><br>
+		<img onclick="drawpanel(this)" src="gl.png"/><img onclick="drawpanel(this)" src="gf.png"/><img onclick="drawpanel(this)" src="gr.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><img onclick="drawpanel(this)" src="xx.png"/><br>
+		<img onclick="drawpanel(this)" src="cr.png"/><img onclick="drawpanel(this)" src="cc.png"/><img onclick="drawpanel(this)" src="cg.png"/><img onclick="drawpanel(this)" src="cy.png"/><img onclick="drawpanel(this)" src="cp.png"/><img onclick="drawpanel(this)" src="cb.png"/><br>
+		<img onclick="drawpanel(this)" src="pr.png"/><img onclick="drawpanel(this)" src="pc.png"/><img onclick="drawpanel(this)" src="pg.png"/><img onclick="drawpanel(this)" src="py.png"/><img onclick="drawpanel(this)" src="pp.png"/><img onclick="drawpanel(this)" src="pb.png"/><br>
+		<img onclick="drawpanel(this)" src="pr.png"/><img onclick="drawpanel(this)" src="pc.png"/><img onclick="drawpanel(this)" src="pg.png"/><img onclick="drawpanel(this)" src="py.png"/><img onclick="drawpanel(this)" src="pp.png"/><img onclick="drawpanel(this)" src="pb.png"/><br>
+		<img onclick="drawpanel(this)" src="pr.png"/><img onclick="drawpanel(this)" src="pc.png"/><img onclick="drawpanel(this)" src="pg.png"/><img onclick="drawpanel(this)" src="py.png"/><img onclick="drawpanel(this)" src="pp.png"/><img onclick="drawpanel(this)" src="pb.png"/><br>
+		<img onclick="drawpanel(this)" src="pr.png"/><img onclick="drawpanel(this)" src="pc.png"/><img onclick="drawpanel(this)" src="pg.png"/><img onclick="drawpanel(this)" src="py.png"/><img onclick="drawpanel(this)" src="pp.png"/><img onclick="drawpanel(this)" src="pb.png"/>
+	</div>
+	<br>
+	<div id="tileset">
+		<img onclick="selpanel(this)" src="gl.png"/><img onclick="selpanel(this)" src="fl.png"/><img onclick="selpanel(this)" src="fr.png"/><img onclick="selpanel(this)" src="gm.png"/><img onclick="selpanel(this)" src="gf.png"/><img onclick="selpanel(this)" src="gr.png"/><br>
+		<img onclick="selpanel(this)" src="pr.png"/><img onclick="selpanel(this)" src="pc.png"/><img onclick="selpanel(this)" src="pg.png"/><img onclick="selpanel(this)" src="py.png"/><img onclick="selpanel(this)" src="pp.png"/><img onclick="selpanel(this)" src="pb.png"/><br>
+		<img onclick="selpanel(this)" src="ps.png"/><img onclick="selpanel(this)" src="po.png"/><img onclick="selpanel(this)" src="px.png"/><img onclick="selpanel(this)" src="sl.png"/><img onclick="selpanel(this)" src="sm.png"/><img onclick="selpanel(this)" src="sr.png"/><br>
+		<img onclick="selpanel(this)" src="cr.png"/><img onclick="selpanel(this)" src="cc.png"/><img onclick="selpanel(this)" src="cg.png"/><img onclick="selpanel(this)" src="cy.png"/><img onclick="selpanel(this)" src="cp.png"/><img onclick="selpanel(this)" src="cb.png"/><br>
+		<img onclick="selpanel(this)" src="co.png"/><img onclick="selpanel(this)" src="xx.png"/><img onclick="selpanel(this)" src="xx.png"/><img onclick="selpanel(this)" src="xx.png"/><img onclick="selpanel(this)" src="xx.png"/><img onclick="selpanel(this)" src="xx.png"/>
+	</div>
+	<br>
+	Whitespace:<input type="checkbox" id="whitespace"><br>
+	<button onclick="clearpanels()">Clear</button><button onclick="discord()">Discord</button>
+	<br><button onclick="panelattack()">Panel Atack</button>
+	<div>
+		<textarea id="discordtext"></textarea>
+	</div>
+	<button onclick="loadset()">Load</button>
+</body>
+</center>
+</html>
+<script>
+var selectedpanel = "px.png"
+function drawpanel(img)
+{
+	img.src = selectedpanel
+}
+function selpanel(img)
+{
+	selectedpanel = img.src
+}
+function clearpanels()
+{
+	var children = document.getElementById('field').getElementsByTagName('img');
+	for( var i = 0; i<children.length; i++)
+	{
+		children[i].src = "xx.png"
+	}
+}
+function discord()
+{
+	var gentext = ""
+	var children = document.getElementById('field').getElementsByTagName('img');
+
+	var linecount = 0;
+	var line = ""
+	for( var i = 0; i<children.length; i++)
+	{
+	    line += ":"+children[i].src.substr(children[i].src.length - 6, 2)+":"
+	    linecount += 1;
+	    if(linecount >= 6)
+	    {
+	    	linecount = 0;
+
+	    	if(document.getElementById("whitespace").checked == false)
+	    	{
+	    		while(line.substr(line.length - 4, 4) == ":xx:")
+	    		{
+	    			line = line.substr(0,line.length-4)
+	    		}
+	    	}
+	    	if(line.length != 0 && i <= 66)
+	    		line += "\n"
+	    	gentext += line
+	    	line = ""
+		}
+	}
+	document.getElementById("discordtext").value = gentext
+}
+function panelattack()
+{
+/*
+0 = empty
+1 = red
+2 = green
+3 = light blue
+4 = yellow
+5 = purple
+6 = dark blue
+7 = orange (not really used in the game so far, but it exists)
+8 = exclamation block [!]
+9 = block with no color (dark grey, doesn't match with anything)
+*/
+	var gentext = ""
+	var children = document.getElementById('field').getElementsByTagName('img');
+	for( var i = 0; i<children.length; i++)
+	{
+	    gentext += ":"+children[i].src.substr(children[i].src.length - 6, 2)+":"
+	    gentext = gentext.replace(":xx:", "0");
+	    gentext = gentext.replace(":pr:", "1");
+	    gentext = gentext.replace(":cr:", "1");
+	    gentext = gentext.replace(":pg:", "2");
+	    gentext = gentext.replace(":cg:", "2");
+	    gentext = gentext.replace(":pc:", "3");
+	    gentext = gentext.replace(":cc:", "3");
+	    gentext = gentext.replace(":py:", "4");
+	    gentext = gentext.replace(":cy:", "4");
+	    gentext = gentext.replace(":pp:", "5");
+	    gentext = gentext.replace(":cp:", "5");
+	    gentext = gentext.replace(":pb:", "6");
+	    gentext = gentext.replace(":cb:", "6");
+	    gentext = gentext.replace(":po:", "7");
+	    gentext = gentext.replace(":co:", "7");
+	    gentext = gentext.replace(":ps:", "8");
+	    gentext = gentext.replace(":px:", "9");
+
+	    gentext = gentext.replace(":gl:", "9");
+	    gentext = gentext.replace(":gm:", "9");
+	    gentext = gentext.replace(":gf:", "9");
+	    gentext = gentext.replace(":gr:", "9");
+	    gentext = gentext.replace(":fl:", "9");
+	    gentext = gentext.replace(":fr:", "9");
+	    gentext = gentext.replace(":sl:", "8");
+	    gentext = gentext.replace(":sm:", "8");
+	    gentext = gentext.replace(":sr:", "8");
+
+	    if(document.getElementById("whitespace").checked == false)
+	    {
+	    	gentext = gentext.replace(/^0+/, '');
+	    }
+	}
+	document.getElementById("discordtext").value = gentext
+}
+function loadset()
+{
+	var loadtext = document.getElementById("discordtext").value;
+	loadtext = loadtext.replace(/ /g,'');
+	loadtext = loadtext.replace(/:panelheart:/g,':pr:');
+	loadtext = loadtext.replace(/:panelsquare:/g,':po:');
+	loadtext = loadtext.replace(/:panelstar:/g,':py:');
+	loadtext = loadtext.replace(/:panelcircle:/g,':pg:');
+	loadtext = loadtext.replace(/:paneltriangle:/g,':pc:');
+	loadtext = loadtext.replace(/:paneldelta:/g,':pb:');
+	loadtext = loadtext.replace(/:paneldiamond:/g,':pp:');
+	loadtext = loadtext.replace(/:panelshock:/g,':ps:');
+	loadtext = loadtext.replace(/:panelblank:/g,':px:');
+	clearpanels();
+	var children = document.getElementById('field').getElementsByTagName('img');
+	//Detect type
+	if(loadtext.includes(":"))
+	{
+		lines = loadtext.split("\n")
+		for( var i = 0; i < lines.length; i++)
+		{
+			while(lines[i].length < 24)
+			{
+				lines[i] += ":xx:"
+			}
+		}
+		loadtext = lines.join().replace(/,/g,"");
+		loadtext = loadtext.replace(/ /g,"");
+		for( var i = children.length-1; i>=0; i--)
+		{
+			children[i].src = loadtext.substr(loadtext.length - 3, 2)+".png";
+			loadtext = loadtext.substr(0,loadtext.length-4)
+			if(loadtext.length == 0)
+				i = -1;
+		}
+	}else
+	{
+		//document.getElementById("discordtext").value = "Detected PA"
+		loadtext = loadtext.replace(/0/g, ":xx:");
+		loadtext = loadtext.replace(/1/g, ":pr:");
+		loadtext = loadtext.replace(/2/g, ":pg:");
+		loadtext = loadtext.replace(/3/g, ":pc:");
+		loadtext = loadtext.replace(/4/g, ":py:");
+		loadtext = loadtext.replace(/5/g, ":pp:");
+		loadtext = loadtext.replace(/6/g, ":pb:");
+		loadtext = loadtext.replace(/7/g, ":po:");
+		loadtext = loadtext.replace(/8/g, ":ps:");
+		loadtext = loadtext.replace(/9/g, ":px:");
+		for( var i = children.length-1; i>=0; i--)
+		{
+			children[i].src = loadtext.substr(loadtext.length - 3, 2)+".png";
+			loadtext = loadtext.substr(0,loadtext.length-4)
+			if(loadtext.length == 0)
+				i = -1;
+		}
+	}
+}
+</script>
