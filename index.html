@@ -173,7 +173,7 @@ function drawgarbage(img)
             {   // draw left side tile
                 if (column === bottomRightAnchor.column)
                 {   // 1x1 tile, draw 4-sided tile
-                    element.src = "images/g4s.png";
+                    element.src = "images/gas.png";
                 }
                 else
                 {
@@ -245,7 +245,10 @@ function discord()
 	var line = ""
 	for( var i = 0; i<children.length; i++)
 	{
-	    line += ":"+children[i].src.substr(children[i].src.length - 6, 2)+":"
+        var imageNameStart = children[i].src.lastIndexOf("/") + 1;
+        var imageNameEnd = children[i].src.lastIndexOf(".");
+        var nameLength = imageNameEnd - imageNameStart;
+	    line += ":"+children[i].src.substr(imageNameStart, nameLength) +":"
 	    linecount += 1;
 	    if(linecount >= 6)
 	    {
@@ -307,11 +310,22 @@ function panelattack()
 	    gentext = gentext.replace(":px:", "9");
 
 	    gentext = gentext.replace(":gl:", "[");
+        gentext = gentext.replace(":gtl:", "[");
+        gentext = gentext.replace(":gtr:", "=");
+        gentext = gentext.replace(":gbl:", "=");
+        gentext = gentext.replace(":gls:", "=");
+        gentext = gentext.replace(":grs:", "=");
+        gentext = gentext.replace(":gts:", "=");
+        gentext = gentext.replace(":gbs:", "=");
+        gentext = gentext.replace(":gls:", "=");
+        gentext = gentext.replace(":ge:", "=");
 	    gentext = gentext.replace(":gm:", "=");
 	    gentext = gentext.replace(":gf:", "=");
-	    gentext = gentext.replace(":gr:", "]");
-	    gentext = gentext.replace(":fl:", "=");
+        gentext = gentext.replace(":fl:", "=");
 	    gentext = gentext.replace(":fr:", "=");
+        gentext = gentext.replace(":gbr:", "]");
+	    gentext = gentext.replace(":gr:", "]");
+	    
 	    gentext = gentext.replace(":sl:", "{");
 	    gentext = gentext.replace(":sm:", "=");
 	    gentext = gentext.replace(":sr:", "}");
@@ -344,41 +358,134 @@ function loadset()
 		lines = loadtext.split("\n")
 		for( var i = 0; i < lines.length; i++)
 		{
-			while(lines[i].length < 24)
+            // make sure each row has 6 panels if less were entered to form a valid puzzle string
+			while(lines[i].split(":").length < 13)
 			{
 				lines[i] += ":xx:"
 			}
 		}
+        // stitch the rows back together into the puzzle string and delete whitespace
 		loadtext = lines.join().replace(/,/g,"");
 		loadtext = loadtext.replace(/ /g,"");
+        var textArray = loadtext.split("::");
+        textArray.forEach(function(item, i) { textArray[i] = textArray[i].replace(":", "") })
+        var j = 1
 		for( var i = children.length-1; i>=0; i--)
 		{
-			children[i].src = "images/"+loadtext.substr(loadtext.length - 3, 2)+".png";
-			loadtext = loadtext.substr(0,loadtext.length-4)
-			if(loadtext.length == 0)
+			children[i].src = "images/" + textArray[textArray.length - j] + ".png";
+			if(j == textArray.length)
 				i = -1;
+            j++;
 		}
 	}else
 	{
 		//document.getElementById("discordtext").value = "Detected PA"
-		loadtext = loadtext.replace(/0/g, ":xx:");
-		loadtext = loadtext.replace(/1/g, ":pr:");
-		loadtext = loadtext.replace(/2/g, ":pg:");
-		loadtext = loadtext.replace(/3/g, ":pc:");
-		loadtext = loadtext.replace(/4/g, ":py:");
-		loadtext = loadtext.replace(/5/g, ":pp:");
-		loadtext = loadtext.replace(/6/g, ":pb:");
-		loadtext = loadtext.replace(/7/g, ":po:");
-		loadtext = loadtext.replace(/8/g, ":ps:");
-		loadtext = loadtext.replace(/9/g, ":px:");
+        var textArray = Array.from(loadtext);
+        textArray = loadReplaceGarbage(textArray, true);
+        textArray = loadReplaceGarbage(textArray, false);
+        textArray.forEach(function(entry, i) { if (entry == 0) textArray[i] = "xx"});
+        textArray.forEach(function(entry, i) { if (entry == 1) textArray[i] = "pr"});
+        textArray.forEach(function(entry, i) { if (entry == 2) textArray[i] = "pg"});
+        textArray.forEach(function(entry, i) { if (entry == 3) textArray[i] = "pc"});
+        textArray.forEach(function(entry, i) { if (entry == 4) textArray[i] = "py"});
+        textArray.forEach(function(entry, i) { if (entry == 5) textArray[i] = "pp"});
+        textArray.forEach(function(entry, i) { if (entry == 6) textArray[i] = "pb"});
+        textArray.forEach(function(entry, i) { if (entry == 7) textArray[i] = "po"});
+        textArray.forEach(function(entry, i) { if (entry == 8) textArray[i] = "ps"});
+        textArray.forEach(function(entry, i) { if (entry == 9) textArray[i] = "px"});
+        
+        
+        var j = 1
 		for( var i = children.length-1; i>=0; i--)
 		{
-			children[i].src = "images/"+loadtext.substr(loadtext.length - 3, 2)+".png";
-			loadtext = loadtext.substr(0,loadtext.length-4)
-			if(loadtext.length == 0)
+			children[i].src = "images/" + textArray[textArray.length - j] +".png";
+			if(j === textArray.length)
 				i = -1;
+            j++;
 		}
 	}
+}
+
+function loadReplaceGarbage(textArray, metal)
+{
+    var garbageStartCharacter = (metal) ? "{" : "[";
+    var garbageEndCharacter = (metal) ? "}" : "]";
+
+    var garbageStartIndex = textArray.indexOf(garbageStartCharacter);
+    while (garbageStartIndex != -1) 
+    {
+        var garbageEndIndex = textArray.indexOf(garbageEndCharacter);
+        if (garbageEndIndex - garbageStartIndex > 5) 
+        {
+            textArray[garbageStartIndex] = "gtl";
+            textArray[garbageEndIndex] = "gbr";
+            for (let index = garbageStartIndex; index < garbageEndIndex; index++)
+            {
+                if (textArray[index] === "=")
+                {
+                    if (index - garbageStartIndex < 5)
+                    {
+                        textArray[index] = "gts";
+                    }
+                    else if (index - garbageStartIndex === 5) 
+                    {
+                        textArray[index] = "gtr";
+                    }
+                    else if (garbageEndIndex - index <= 6 )
+                    {
+                        if (garbageEndIndex - index === 5)
+                        {
+                            textArray[index] = "gbl";
+                        }
+                        else {
+                            textArray[index] = "gbs";
+                        }
+                    }
+                    else 
+                    {
+                        if ((index - garbageStartIndex) % 6 === 0)
+                        {
+                            textArray[index] = "gls";
+                        }
+                        else if ((garbageEndIndex - index) % 6 === 0)
+                        {
+                            textArray[index] = "grs";
+                        }
+                        else
+                        {
+                            textArray[index] = "ge";
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            textArray[garbageStartIndex] = metal ? "sl" : "gl";
+            textArray[garbageEndIndex] = metal ? "sr" : "gr";
+            if (!metal && (garbageEndIndex - garbageStartIndex) % 2 > 0)
+            {   //split face
+                textArray[(garbageStartIndex + garbageEndIndex) / 2 - 0.5] = "fl";
+                textArray[(garbageStartIndex + garbageEndIndex) / 2 + 0.5] = "fr";
+            }
+            else if (!metal && (garbageEndIndex - garbageStartIndex) % 2 === 0)
+            {   //unsplit face
+                textArray[(garbageStartIndex + garbageEndIndex) / 2] = "gf";
+            }
+
+            for (let index = garbageStartIndex; index < garbageEndIndex; index++)
+            {
+                if (textArray[index] === "=")
+                {
+                    textArray[index] = metal ? "sm" : "gm";
+                }
+            }
+        }
+
+        garbageStartIndex = textArray.indexOf(garbageStartCharacter);
+    }
+
+    return textArray;
 }
 
 function Vector(components)
