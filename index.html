@@ -34,13 +34,13 @@ img
 	</div>
 	<br>
 	<div id="tileset">
-		<img onclick="selpanel(this)" src="images/gtl.png" paneltype="garbage"/><img onclick="selpanel(this)" src="images/gtr.png" paneltype="garbage"/><img onclick="selpanel(this)" src="images/gbl.png" paneltype="garbage"/><img onclick="selpanel(this)" src="images/gbr.png" paneltype="garbage"/>
-        <img onclick="selpanel(this)" src="images/gl.png"/><img onclick="selpanel(this)" src="images/fl.png"/><img onclick="selpanel(this)" src="images/fr.png"/><img onclick="selpanel(this)" src="images/gm.png"/><img onclick="selpanel(this)" src="images/gf.png"/><img onclick="selpanel(this)" src="images/gr.png"/><br>
-		<img onclick="selpanel(this)" src="images/pr.png"/><img onclick="selpanel(this)" src="images/pc.png"/><img onclick="selpanel(this)" src="images/pg.png"/><img onclick="selpanel(this)" src="images/py.png"/><img onclick="selpanel(this)" src="images/pp.png"/><img onclick="selpanel(this)" src="images/pb.png"/><br>
-		<img onclick="selpanel(this)" src="images/ps.png"/><img onclick="selpanel(this)" src="images/po.png"/><img onclick="selpanel(this)" src="images/px.png"/><img onclick="selpanel(this)" src="images/sl.png"/><img onclick="selpanel(this)" src="images/sm.png"/><img onclick="selpanel(this)" src="images/sr.png"/><br>
-		<img onclick="selpanel(this)" src="images/cr.png"/><img onclick="selpanel(this)" src="images/cc.png"/><img onclick="selpanel(this)" src="images/cg.png"/><img onclick="selpanel(this)" src="images/cy.png"/><img onclick="selpanel(this)" src="images/cp.png"/><img onclick="selpanel(this)" src="images/cb.png"/><br>
-		<img onclick="selpanel(this)" src="images/co.png"/><img onclick="selpanel(this)" src="images/xx.png"/><img onclick="selpanel(this)" src="images/xx.png"/><img onclick="selpanel(this)" src="images/xx.png"/><img onclick="selpanel(this)" src="images/xx.png"/><img onclick="selpanel(this)" src="images/xx.png"/>
-	</div>
+        <img onclick="selpanel(this)" src="images/gl.png" paneltype="combogarbage"/><img onclick="selpanel(this)" src="images/fl.png" paneltype="combogarbage"/><img onclick="selpanel(this)" src="images/fr.png" paneltype="combogarbage"/><img onclick="selpanel(this)" src="images/gm.png" paneltype="combogarbage"/><img onclick="selpanel(this)" src="images/gf.png" paneltype="combogarbage"/><img onclick="selpanel(this)" src="images/gr.png"  paneltype="combogarbage"/><br />
+		<img onclick="selpanel(this)" src="images/sl.png" paneltype="combogarbage"/><img onclick="selpanel(this)" src="images/sm.png" paneltype="combogarbage"/><img onclick="selpanel(this)" src="images/sr.png" paneltype="chaingarbage"/><img onclick="selpanel(this)" src="images/gtl.png" paneltype="chaingarbage"/><img onclick="selpanel(this)" src="images/gts.png" paneltype="chaingarbage"/><img onclick="selpanel(this)" src="images/gtr.png" paneltype="chaingarbage"/><br />
+		<img onclick="selpanel(this)" src="images/pr.png"/><img onclick="selpanel(this)" src="images/pc.png"/><img onclick="selpanel(this)" src="images/pg.png"/><img onclick="selpanel(this)" src="images/gls.png" paneltype="chaingarbage"/><img onclick="selpanel(this)" src="images/ge.png" paneltype="chaingarbage"/><img onclick="selpanel(this)" src="images/grs.png" paneltype="chaingarbage"/><br />
+        <img onclick="selpanel(this)" src="images/py.png"/><img onclick="selpanel(this)" src="images/pp.png"/><img onclick="selpanel(this)" src="images/pb.png"/><img onclick="selpanel(this)" src="images/gbl.png" paneltype="chaingarbage"/><img onclick="selpanel(this)" src="images/gbs.png" paneltype="chaingarbage"/><img onclick="selpanel(this)" src="images/gbr.png" paneltype="chaingarbage"/><br />
+		<img onclick="selpanel(this)" src="images/ps.png"/><img onclick="selpanel(this)" src="images/px.png"/><img onclick="selpanel(this)" src="images/po.png"/><img onclick="selpanel(this)" src="images/cr.png"/><img onclick="selpanel(this)" src="images/cc.png"/><img onclick="selpanel(this)" src="images/cg.png"/><br>
+		<img onclick="selpanel(this)" src="images/xx.png"/><img onclick="selpanel(this)" src="images/xx.png"/><img onclick="selpanel(this)" src="images/co.png"/><img onclick="selpanel(this)" src="images/cy.png"/><img onclick="selpanel(this)" src="images/cp.png"/><img onclick="selpanel(this)" src="images/cb.png"/><br>
+    </div>
 	<br>
 	Whitespace:<input type="checkbox" id="whitespace"><br>
 	<button onclick="clearpanels()">Clear</button><button onclick="discord()">Discord</button>
@@ -68,22 +68,29 @@ function updateElementBelowMouse(event)
 }
 function draw(img)
 {
-    if (selectedpanel.getAttribute('panelType') === "garbage")
+    var panelType = selectedpanel.getAttribute('panelType')
+    if (!lastImgBelowMouse)
     {
-        if (!lastImgBelowMouse)
-        {
-            lastImgBelowMouse = img
-        }
-        drawgarbage(img)
+        lastImgBelowMouse = img
+    }
+    if (panelType === "chaingarbage")
+    {
+        drawchaingarbage(img)
+    }
+    else if (panelType === "combogarbage")
+    {
+        drawcombogarbage(img)
     }
     else
     {
         drawpanel(img)
     }
 }
-function drawgarbage(img)
+
+// for the purpose of this tool this method does not consider 6x1 garbage chaingarbage but only garbage that takes up at least 2 rows
+function drawchaingarbage(img)
 {
-    //get the coordinate from the panel we are on right now
+    //get the coordinate from the panel we are on right now (lastImgBelowMouse)
     //calculate width + height of the garbage by doing a diff with the panel where we started dragging
     var anchor1X = Number(img.getAttribute('column'))
     var anchor1Y = Number(img.getAttribute('row'))
@@ -99,29 +106,30 @@ function drawgarbage(img)
     console.log("topLeftAnchor is " + topLeftAnchor.row + "|" + topLeftAnchor.column)
     console.log("bottomRightAnchor is " + bottomRightAnchor.row + "|" + bottomRightAnchor.column)
 
-    var splitFaceHorizontally = garbageHeight % 2 === 0
-    var splitFaceVertically = garbageWidth % 2 === 0
+    // let's ignore the face for starters
+    //var splitFaceHorizontally = garbageHeight % 2 === 0
+    //var splitFaceVertically = garbageWidth % 2 === 0
     //var faceAnchor;
     //faceAnchor.X = topLeftAnchor.X - 0.5 + garbageWidth / 2.0;
     //faceAnchor.Y = topLeftAnchor + 0.5 + garbageHeight / 2.0;
-    // let's ignore the face for starters
 
-    if (garbageHeight > 2) 
+    if (garbageHeight > 1) 
     {   // 4 corner tiles and onesided walls
         // by convention always draw rowwise from top left to bottom right
         for (var row = topLeftAnchor.row; row >= bottomRightAnchor.row; row--) 
         {
-            for (var column = topLeftAnchor.column; column <= bottomRightAnchor.column; column++)
+            // by convention always 6 wide because the current PA implementation does not support thinner bulk shapes
+            for (var column = 1; column <= 6; column++) //for (var column = topLeftAnchor.column; column <= bottomRightAnchor.column; column++)
             {
                 var element = document.querySelector("[row='" + row + "'][column='" + column + "']");
                 console.log("About to draw element at " + row + "|" + column);
                 if (row === topLeftAnchor.row)
                 {
-                    if (column === topLeftAnchor.column)
+                    if (column === 1) // topLeftAnchor.column)
                     {   // draw top left corner tile
                         element.src = "images/gtl.png";
                     }
-                    else if (column === bottomRightAnchor.column)
+                    else if (column === 6) //bottomRightAnchor.column)
                     {   // draw top right corner tile
                         element.src = "images/gtr.png";
                     }
@@ -132,11 +140,11 @@ function drawgarbage(img)
                 }
                 else if (row === bottomRightAnchor.row)
                 {
-                    if (column === topLeftAnchor.column)
+                    if (column === 1) //topLeftAnchor.column)
                     {   // draw bottom left corner tile
                         element.src = "images/gbl.png";
                     }
-                    else if (column === bottomRightAnchor.column)
+                    else if (column === 6) //bottomRightAnchor.column)
                     {   // draw bottom right corner tile
                         element.src = "images/gbr.png";
                     }
@@ -147,11 +155,11 @@ function drawgarbage(img)
                 }
                 else
                 {
-                    if (column === topLeftAnchor.column)
+                    if (column === 1) //topLeftAnchor.column)
                     {   // draw left edge tile
                         element.src = "images/gls.png";
                     }
-                    else if (column === bottomRightAnchor.column)
+                    else if (column === 6) //bottomRightAnchor.column)
                     {   // draw right edge tile
                         element.src = "images/grs.png";
                     }
@@ -163,45 +171,64 @@ function drawgarbage(img)
             }
         }
     }
-    else
-    {   // 2 side tiles and twosided walls
-        for (var column = topLeftAnchor.column; column <= bottomRightAnchor.column; column++)
-        {
-            console.log("About to draw element at " + topLeftAnchor.row + "|" + column);
-            var element = document.querySelector("[row='"+topLeftAnchor.row+"'][column='"+column+"']");
-            if (column === topLeftAnchor.column)
-            {   // draw left side tile
-                if (column === bottomRightAnchor.column)
-                {   // 1x1 tile, draw 4-sided tile
-                    element.src = "images/gas.png";
-                }
-                else
-                {
-                    element.src = "images/gl.png";
-                }
-            }
-            else if (column === bottomRightAnchor.column)
-            {   // draw right side tile
-                element.src = "images/gr.png";
+}
+
+function drawcombogarbage(img)
+{
+    var metal = img.src.substr(8, 1) === "s"
+    //get the coordinate from the panel we are on right now
+    //calculate width + height of the garbage by doing a diff with the panel where we started dragging
+    var anchor1X = Number(img.getAttribute('column'))
+    var anchor1Y = Number(img.getAttribute('row'))
+    console.log("anchor1 at " + anchor1Y + "|" + anchor1X);
+    var anchor2X = Number(lastImgBelowMouse.getAttribute('column'))
+    console.log("anchor2 at " + anchor1Y + "|" + anchor2X);
+    var garbageWidth = Math.abs(anchor1X - anchor2X) + 1
+    console.log("garbage dimensions are " + garbageWidth + "x1");
+    var topLeftAnchor = getTopLeftAnchorOfBox(anchor1X, anchor1Y, anchor2X, anchor1Y)
+    var bottomRightAnchor = getBottomRightAnchorOfBox(topLeftAnchor, garbageWidth - 1, 0)
+    console.log("topLeftAnchor is " + topLeftAnchor.row + "|" + topLeftAnchor.column)
+    console.log("bottomRightAnchor is " + bottomRightAnchor.row + "|" + bottomRightAnchor.column)
+
+    var splitFaceVertically = garbageWidth % 2 === 0
+
+    // 2 side tiles and twosided walls
+    for (var column = topLeftAnchor.column; column <= bottomRightAnchor.column; column++)
+    {
+        console.log("About to draw element at " + topLeftAnchor.row + "|" + column);
+        var element = document.querySelector("[row='"+topLeftAnchor.row+"'][column='"+column+"']");
+        if (column === topLeftAnchor.column)
+        {   // draw left side tile
+            if (column === bottomRightAnchor.column)
+            {   // 1x1 tile, draw 4-sided tile
+                element.src = "images/gas.png";
             }
             else
-            {   // draw top/bottom edge tile
-                if (splitFaceVertically && (1 + column - topLeftAnchor.column === garbageWidth / 2))
-                {
-                    element.src = "images/fl.png";
-                }
-                else if (splitFaceVertically && (column - topLeftAnchor.column === garbageWidth / 2))
-                {
-                    element.src = "images/fr.png";
-                }
-                else if (!splitFaceVertically && column - topLeftAnchor.column + 1 === (garbageWidth + 1) / 2)
-                {
-                    element.src = "images/gf.png";
-                }
-                else
-                {
-                    element.src = "images/gm.png";
-                }
+            {
+                element.src = metal ? "images/sl.png" : "images/gl.png";
+            }
+        }
+        else if (column === bottomRightAnchor.column)
+        {   // draw right side tile
+            element.src = metal ? "images/sr.png" : "images/gr.png";
+        }
+        else
+        {   // draw top/bottom edge tile
+            if (splitFaceVertically && (1 + column - topLeftAnchor.column === garbageWidth / 2))
+            {
+                element.src = metal ? "images/sm.png" : "images/fl.png";
+            }
+            else if (splitFaceVertically && (column - topLeftAnchor.column === garbageWidth / 2))
+            {
+                element.src = metal ? "images/sm.png" : "images/fr.png";
+            }
+            else if (!splitFaceVertically && column - topLeftAnchor.column + 1 === (garbageWidth + 1) / 2)
+            {
+                element.src = metal ? "images/sm.png" : "images/gf.png";
+            }
+            else
+            {
+                element.src = metal ? "images/sm.png" : "images/gm.png";
             }
         }
     }
