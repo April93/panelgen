@@ -317,7 +317,10 @@ function panelattack()
 	var children = document.getElementById('field').getElementsByTagName('img');
 	for( var i = 0; i<children.length; i++)
 	{
-	    gentext += ":"+children[i].src.substr(children[i].src.length - 6, 2)+":"
+        var imageNameStart = children[i].src.lastIndexOf("/") + 1;
+        var imageNameEnd = children[i].src.lastIndexOf(".");
+        var nameLength = imageNameEnd - imageNameStart;
+	    gentext += ":"+children[i].src.substr(imageNameStart, nameLength)+":"
 	    gentext = gentext.replace(":xx:", "0");
 	    gentext = gentext.replace(":pr:", "1");
 	    gentext = gentext.replace(":cr:", "1");
